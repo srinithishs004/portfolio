@@ -1,7 +1,7 @@
-# <div align="center">Whimsy Workshop Portfolio</div>
+# <div align="center">Sri Nithish S Portfolio</div>
 
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:0f172a,40:14532d,100:f59e0b&text=Whimsy%20Workshop&fontColor=fff8e7&fontSize=44&fontAlignY=38&desc=Cinematic%203D%20portfolio%20built%20with%20React,%20Vite,%20Three.js%20and%20GSAP&descAlignY=58&animation=fadeIn" alt="Whimsy Workshop banner" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:0f172a,40:14532d,100:f59e0b&text=Sri%20Nithish%20S&fontColor=fff8e7&fontSize=44&fontAlignY=38&desc=Interactive%203D%20portfolio%20built%20with%20React,%20Vite,%20Three.js%20and%20GSAP&descAlignY=58&animation=fadeIn" alt="Sri Nithish S banner" />
 </div>
 
 <div align="center">
@@ -18,7 +18,7 @@
 </div>
 
 <p align="center">
-  A scroll-based 3D portfolio experience built as a guided journey through animated forest scenes, layered particles, and interactive story chapters.
+  This is my portfolio, built as a scroll-based 3D experience with animated forest scenes, layered particles, and interactive story chapters.
 </p>
 
 ---
@@ -31,7 +31,7 @@
 
 ## What This Is
 
-This project turns a personal portfolio into a cinematic walkthrough instead of a flat page. The site uses a fixed `react-three-fiber` canvas, a spline-style camera journey, atmospheric particle systems, and chapter-based scene composition to present skills, work, and identity with more presence than a standard grid layout.
+This project is Sri Nithish S's portfolio, designed as a cinematic walkthrough instead of a flat page. The site uses a fixed `react-three-fiber` canvas, a spline-style camera journey, atmospheric particle systems, and chapter-based scene composition to present skills, work, and identity with more presence than a standard grid layout.
 
 ## Animated Highlights
 

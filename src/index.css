@@ -1,49 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600;700&display=swap');
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body {
-  background: linear-gradient(135deg, #0d1f0d 0%, #1a3a1a 100%);
-  color: #f0f8f0;
-  font-family: 'DM Sans', sans-serif;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  height: 800vh; /* Crucial: Sets height to 8 chapters to drive the window scrollbar */
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #1a3a1a;
-}
-::-webkit-scrollbar-thumb {
-  background: #4a7c59;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #f5a623;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
+@layer base {
+  :root {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 96%;
+    
+    --primary: 119 99% 46%;
+    --primary-foreground: 0 0% 4%;
+    
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 96%;
+    
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: 119 99% 46%;
+    --accent-foreground: 0 0% 4%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 96%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    
+    --ring: 119 99% 46%;
+    --radius: 0.5rem;
+    
+    --nav-button: 0 0% 18%;
+    --hero-bg: 0 0% 8%;
+  }
 }
 
-a {
-  color: #f5a623;
-  text-decoration: none;
-  transition: color 0.3s ease;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    overflow-x: hidden;
+  }
 }
-a:hover {
-  color: #ffc64d;
+
+/* Custom styling for glassmorphic narrative overlays */
+.glass-card {
+  background: rgba(16, 16, 16, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glow-green {
+  box-shadow: 0 0 30px rgba(74, 253, 56, 0.15);
+}
+
+/* Drift animation for fireflies */
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(var(--drift-x, 20px), var(--drift-y, -30px)) scale(1.35);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+}
+
+.animate-drift {
+  animation: drift infinite ease-in-out;
+}
+
+/* Shooting star animation */
+@keyframes shooting-star {
+  0% {
+    transform: translate(0, 0) rotate(-35deg) scale(0);
+    opacity: 0;
+  }
+  1% {
+    opacity: 0.9;
+    transform: translate(-100px, 70px) rotate(-35deg) scale(1);
+  }
+  4% {
+    opacity: 0;
+    transform: translate(-350px, 245px) rotate(-35deg) scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-350px, 245px) rotate(-35deg) scale(0);
+  }
+}
+
+.animate-shooting-star {
+  animation: shooting-star 12s infinite linear;
+}
+
+
+/* GSAP active animation helpers */
+.panel-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  filter: blur(5px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panel-reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }

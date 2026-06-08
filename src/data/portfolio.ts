@@ -87,7 +87,7 @@ export const profile: Profile = {
   linkedin: 'linkedin.com/in/srinithishs',
   github: 'github.com/srinithishs004',
   profilePhoto: 'https://github.com/srinithishs004.png',
-  resumeUrl: 'https://linkedin.com/in/srinithishs', // Fallback URL for resume download
+  resumeUrl: '/resume.pdf', // Local public asset
   bio: "I'm Sri Nithish, a Software Engineer and Computer Science graduate who builds across the full technology stack. My work ranges from backend development with Python and Node.js to cloud infrastructure on AWS, mobile applications, modern web experiences, and intelligent connected systems.\n\nI believe great software isn't defined by a single technology — it's about understanding how all pieces work together, from user interfaces and APIs to cloud services, databases, and real-world devices. That perspective has led me to explore full-stack development, cloud architecture, IoT platforms, and smart systems.\n\nWhat drives me is building things that work. I enjoy transforming complex problems into clean, reliable solutions and continuously expanding what I'm capable of.\n\nToday I'm focused on scalable software, intelligent systems, and engineering experiences that are both technically sound and genuinely useful. My goal: build technology that people can rely on, learn from, and enjoy using.",
   currentRole: 'Cloud Infrastructure Engineer & Full-Stack Developer',
   currentCompany: 'TOTEX ENERGY',

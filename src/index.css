@@ -125,7 +125,7 @@
   background: #fff;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 99999999;
   transform: translate(-50%, -50%);
   opacity: 0;
   will-change: transform;
@@ -141,7 +141,7 @@
   border: 1.5px solid rgba(255,255,255,0.8);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 99998;
+  z-index: 99999998;
   transform: translate(-50%, -50%);
   opacity: 0;
   mix-blend-mode: difference;

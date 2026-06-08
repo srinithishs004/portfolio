@@ -97,7 +97,7 @@ export const skillCategories: SkillCategory[] = [
   {
     category: 'Programming Languages',
     icon: '💻',
-    items: ['Python', 'JavaScript', 'SQL', 'Java', 'HTML', 'CSS'],
+    items: ['Python', 'JavaScript', 'SQL', 'Java'],
   },
   {
     category: 'Frontend Development',

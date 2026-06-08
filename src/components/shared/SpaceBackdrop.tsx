@@ -15,35 +15,35 @@ interface Star {
 
 export const SpaceBackdrop: React.FC<SpaceBackdropProps> = ({ scrollProgress }) => {
   // Calculate opacities for different nebula/sky gradient layers based on scroll progress
-  const skyHeroOpacity = Math.max(0, 1 - scrollProgress / 0.22);
+  const skyHeroOpacity = Math.max(0, 1 - scrollProgress / 0.15);
   
   const skyProfileOpacity = useMemo(() => {
-    if (scrollProgress < 0.18) {
-      return scrollProgress / 0.18;
-    } else if (scrollProgress < 0.48) {
+    if (scrollProgress < 0.12) {
+      return scrollProgress / 0.12;
+    } else if (scrollProgress < 0.45) {
       return 1;
     } else {
-      return Math.max(0, 1 - (scrollProgress - 0.48) / 0.16);
+      return Math.max(0, 1 - (scrollProgress - 0.45) / 0.15);
     }
   }, [scrollProgress]);
 
   const skyExpertiseOpacity = useMemo(() => {
-    if (scrollProgress < 0.42) {
+    if (scrollProgress < 0.40) {
       return 0;
-    } else if (scrollProgress < 0.58) {
-      return (scrollProgress - 0.42) / 0.16;
-    } else if (scrollProgress < 0.76) {
+    } else if (scrollProgress < 0.52) {
+      return (scrollProgress - 0.40) / 0.12;
+    } else if (scrollProgress < 0.78) {
       return 1;
     } else {
-      return Math.max(0, 1 - (scrollProgress - 0.76) / 0.14);
+      return Math.max(0, 1 - (scrollProgress - 0.78) / 0.12);
     }
   }, [scrollProgress]);
 
   const skyFooterOpacity = useMemo(() => {
-    if (scrollProgress < 0.72) {
+    if (scrollProgress < 0.75) {
       return 0;
     } else {
-      return Math.min(1, (scrollProgress - 0.72) / 0.20);
+      return Math.min(1, (scrollProgress - 0.75) / 0.20);
     }
   }, [scrollProgress]);
 

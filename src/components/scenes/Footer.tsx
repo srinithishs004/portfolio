@@ -1,80 +1,73 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { profile } from '../../data/portfolio';
 
-export const Footer: React.FC = () => {
-  // Generate random coordinate arrays for 100 CSS stars
-  const stars = useMemo(() => {
-    const list = [];
-    for (let i = 0; i < 80; i++) {
-      list.push({
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: `${0.8 + Math.random() * 1.8}px`,
-        delay: `${Math.random() * 3}s`,
-        opacity: 0.3 + Math.random() * 0.7
-      });
-    }
-    return list;
-  }, []);
-
+export default function Footer() {
   return (
-    <footer 
-      id="footer" 
-      className="relative min-h-[60vh] py-20 bg-transparent flex items-center justify-center overflow-hidden border-t border-border/20"
-    >
-      {/* ========== PURE CSS STARRY SKY ========== */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {stars.map((star, idx) => (
-          <div 
-            key={idx}
-            className="absolute rounded-full bg-white animate-pulse"
-            style={{
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              animationDelay: star.delay,
-              opacity: star.opacity
-            }}
-          />
-        ))}
-        {/* Bioluminescent mushroom glow orbs on the floor */}
-        <div className="absolute bottom-[-50px] left-[20%] w-48 h-48 bg-primary/5 rounded-full blur-[60px]" />
-        <div className="absolute bottom-[-30px] right-[25%] w-40 h-40 bg-[#ff6b35]/5 rounded-full blur-[50px]" />
-      </div>
+    <footer style={{
+      borderTop: '1px solid rgba(255,255,255,0.06)',
+      padding: '5rem 3rem',
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
 
-      <div className="max-w-2xl mx-auto px-6 text-center relative z-10">
-        
-        {/* Glow orb */}
-        <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto text-xl mb-6 shadow-inner animate-pulse">
-          🌙
+        {/* Top row */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '2rem' }}>
+          <div>
+            <div style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontWeight: 700,
+              fontSize: '1.25rem',
+              letterSpacing: '-0.02em',
+              marginBottom: '0.5rem',
+            }}>
+              {profile.name}
+            </div>
+            <p style={{ color: '#3a3a3a', fontSize: '0.8rem' }}>{profile.currentRole}</p>
+          </div>
+
+          <div style={{ display: 'flex', gap: '2rem' }}>
+            {[
+              { label: 'Email', href: `mailto:${profile.email}` },
+              { label: 'LinkedIn', href: `https://${profile.linkedin}` },
+              { label: 'GitHub', href: `https://${profile.github}` },
+              { label: 'Resume', href: profile.resumeUrl },
+            ].map(link => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: '0.62rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#3a3a3a',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#f0f0f0')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#3a3a3a')}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* Narrative closing */}
-        <h2 className="text-2xl md:text-4xl font-bold font-display text-foreground mb-4 leading-tight">
-          Thank You
-        </h2>
-        
-        <p className="text-muted-foreground text-sm font-accent italic mb-8 max-w-md mx-auto leading-relaxed">
-          "Thank you for exploring my professional journey."
-        </p>
+        {/* Divider */}
+        <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)' }} />
 
-        {/* Signature */}
-        <div className="font-display text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-[#ff6b35] bg-clip-text text-transparent mb-10 select-none">
-          — {profile.name}
-        </div>
-
-        {/* Footer info links */}
-        <div className="flex flex-wrap justify-center gap-6 text-[10px] md:text-xs font-mono uppercase tracking-wider text-muted-foreground/50 border-t border-border/20 pt-8 mt-4">
-          <span>India</span>
-          <span>·</span>
-          <span>© {new Date().getFullYear()} Sri Nithish S</span>
-          <span>·</span>
-          <span>All rights reserved</span>
+        {/* Bottom row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2a2a2a' }}>
+            © {new Date().getFullYear()} {profile.name} · All rights reserved
+          </span>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2a2a2a' }}>
+            {profile.location}
+          </span>
         </div>
 
       </div>
     </footer>
   );
-};
-export default Footer;
+}

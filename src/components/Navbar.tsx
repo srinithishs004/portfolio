@@ -1,134 +1,172 @@
-import React from 'react';
-import Button from './ui/Button';
+import React, { useState, useEffect, useRef } from 'react';
+import { profile } from '../data/portfolio';
+import gsap from 'gsap';
 
 interface NavbarProps {
-  scrollProgress: number;
+  scrollPct: number;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ scrollProgress }) => {
-  const handleLogoClick = (e: React.MouseEvent) => {
+const NAV_LINKS = [
+  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Work', href: '#case-studies' },
+  { label: 'Open Source', href: '#opensource' },
+  { label: 'Leadership', href: '#leadership' },
+  { label: 'Education', href: '#education' },
+  { label: 'Contact', href: '#contact' },
+];
+
+export default function Navbar({ scrollPct }: NavbarProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Initial mount stagger reveal
+    const ctx = gsap.context(() => {
+      const elms = navRef.current?.querySelectorAll('.nav-anim-item');
+      if (elms && elms.length > 0) {
+        gsap.from(elms, {
+          y: -15,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.06,
+          ease: 'power3.out',
+        });
+      }
+    }, navRef);
+    return () => ctx.revert();
+  }, []);
+
+  const scrollTo = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setMenuOpen(false);
+    const target = document.querySelector(href);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const handleLinkClick = (e: React.MouseEvent, selector: string) => {
-    e.preventDefault();
-    const el = document.querySelector(selector);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  // Determine active chapter link based on scroll progress
-  // progress boundaries:
-  // Ch0 (Hero): < 0.12
-  // Ch1 (About): < 0.25
-  // Ch2 (Skills): < 0.38
-  // Ch3 (Experience): < 0.51
-  // Ch4 (Projects): < 0.64
-  // Ch5 (Bridge): < 0.77
-  // Ch6 (Contact): < 0.90
-  const activeSection = React.useMemo(() => {
-    if (scrollProgress < 0.15) return 'hero';
-    if (scrollProgress < 0.35) return 'about';
-    if (scrollProgress < 0.55) return 'skills';
-    if (scrollProgress < 0.75) return 'experience';
-    if (scrollProgress < 0.92) return 'projects';
-    return 'contact';
-  }, [scrollProgress]);
-
-  // Adjust navbar background opacity as user scrolls down
-  const bgOpacity = Math.min(0.9, scrollProgress * 6);
-  const borderOpacity = Math.min(0.15, scrollProgress * 1.5);
 
   return (
-    <nav 
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 lg:px-16 py-5 transition-all duration-300"
-      style={{
-        backgroundColor: `rgba(26, 26, 26, ${bgOpacity})`,
-        borderBottom: `1px solid rgba(255, 255, 255, ${borderOpacity})`,
-        backdropFilter: scrollProgress > 0.02 ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: scrollProgress > 0.02 ? 'blur(12px)' : 'none',
-      }}
-    >
-      {/* Left: Logo */}
-      <a 
-        href="#" 
-        onClick={handleLogoClick}
-        className="brand-logo text-foreground text-lg font-bold tracking-wider uppercase select-none"
+    <nav ref={navRef} className={`navbar ${scrollPct > 0.01 ? 'scrolled' : ''}`}>
+      {/* Logo */}
+      <a
+        href="#"
+        onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+        className="nav-anim-item"
+        data-magnetic
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontWeight: 700,
+          fontSize: '0.85rem',
+          letterSpacing: '0.12em',
+          color: '#f0f0f0',
+          textDecoration: 'none',
+          textTransform: 'uppercase',
+          cursor: 'none',
+        }}
       >
-        SRI NITHISH S
+        Sri Nithish
       </a>
 
-      {/* Center: Nav links */}
-      <ul className="hidden md:flex items-center gap-8 list-none">
-        <li>
-          <a 
-            href="#about" 
-            onClick={(e) => handleLinkClick(e, '#about')}
-            className={`text-[10px] font-mono tracking-widest uppercase transition-colors ${
-              activeSection === 'about' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Profile
-          </a>
-        </li>
-        <li>
-          <a 
-            href="#skills" 
-            onClick={(e) => handleLinkClick(e, '#skills')}
-            className={`text-[10px] font-mono tracking-widest uppercase transition-colors ${
-              activeSection === 'skills' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Expertise
-          </a>
-        </li>
-        <li>
-          <a 
-            href="#experience" 
-            onClick={(e) => handleLinkClick(e, '#experience')}
-            className={`text-[10px] font-mono tracking-widest uppercase transition-colors ${
-              activeSection === 'experience' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Milestones
-          </a>
-        </li>
-        <li>
-          <a 
-            href="#projects" 
-            onClick={(e) => handleLinkClick(e, '#projects')}
-            className={`text-[10px] font-mono tracking-widest uppercase transition-colors ${
-              activeSection === 'projects' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Projects
-          </a>
-        </li>
-
-        <li>
-          <a 
-            href="#contact" 
-            onClick={(e) => handleLinkClick(e, '#contact')}
-            className={`text-[10px] font-mono tracking-widest uppercase transition-colors ${
-              activeSection === 'contact' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            Contact
-          </a>
-        </li>
+      {/* Desktop links */}
+      <ul style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}
+        className="hidden-mobile">
+        {NAV_LINKS.map(link => (
+          <li key={link.href} className="nav-anim-item">
+            <a
+              href={link.href}
+              onClick={(e) => scrollTo(e, link.href)}
+              data-magnetic
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.65rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#6b6b6b',
+                textDecoration: 'none',
+                transition: 'color 0.2s',
+                cursor: 'none',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#f0f0f0')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#6b6b6b')}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
       </ul>
 
-      {/* Right: Connect Button */}
-      <Button 
-        variant="navCta" 
-        onClick={() => window.open('https://linkedin.com/in/srinithishs', '_blank')}
-        className="hidden md:inline-flex rounded-lg uppercase text-[10px] tracking-widest px-6 h-10"
+      {/* CTA */}
+      <a
+        href={`mailto:${profile.email}`}
+        className="hidden-mobile nav-anim-item"
+        data-magnetic
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: '0.65rem',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: '#0a0a0a',
+          background: '#f0f0f0',
+          padding: '0.5rem 1.25rem',
+          borderRadius: '4px',
+          textDecoration: 'none',
+          transition: 'opacity 0.2s',
+          cursor: 'none',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
-        LinkedIn
-      </Button>
+        Hire Me
+      </a>
+
+      {/* Mobile menu toggle */}
+      <button
+        className="show-mobile nav-anim-item"
+        onClick={() => setMenuOpen(v => !v)}
+        style={{ background: 'none', border: 'none', color: '#f0f0f0', cursor: 'none', fontSize: '1.25rem' }}
+      >
+        {menuOpen ? '✕' : '☰'}
+      </button>
+
+      {/* Mobile menu dropdown */}
+      {menuOpen && (
+        <div style={{
+          position: 'fixed', top: '64px', left: 0, right: 0,
+          background: 'rgba(10,10,10,0.97)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          padding: '2rem',
+          display: 'flex', flexDirection: 'column', gap: '1.5rem',
+          zIndex: 200,
+        }}>
+          {NAV_LINKS.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => scrollTo(e, link.href)}
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.75rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#6b6b6b',
+                textDecoration: 'none',
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .hidden-mobile { display: none !important; }
+          .show-mobile { display: block !important; }
+        }
+        @media (min-width: 769px) {
+          .show-mobile { display: none !important; }
+        }
+      `}</style>
     </nav>
   );
-};
-export default Navbar;
+}

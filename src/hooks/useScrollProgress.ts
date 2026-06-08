@@ -18,11 +18,13 @@ export const useScrollProgress = (): number => {
 
 // Helper to get chapter name based on scroll position
 export const getChapterName = (progress: number): string => {
-  if (progress < 0.15) return '👤 Sri Nithish S';
-  if (progress < 0.35) return '🌿 Professional Profile';
-  if (progress < 0.55) return '☁️ Technical Expertise';
-  if (progress < 0.75) return '🔥 Career Milestones';
-  if (progress < 0.92) return '🌊 Featured Projects';
-  if (progress < 0.98) return '🦋 Get in Touch';
-  return '🌙 Starry Sky';
+  if (progress < 0.11) return '👤 Sri Nithish';
+  if (progress < 0.22) return '🌿 About Me';
+  if (progress < 0.33) return '☁️ Skills & Expertise';
+  if (progress < 0.44) return '📜 Certifications';
+  if (progress < 0.55) return '🤝 Open Source Contributions';
+  if (progress < 0.66) return '🌊 Case Studies';
+  if (progress < 0.77) return '🔥 Leadership & Achievements';
+  if (progress < 0.88) return '🎓 Education';
+  return '🦋 Get in Touch';
 };

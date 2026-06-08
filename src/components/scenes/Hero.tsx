@@ -1,122 +1,359 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { profile } from '../../data/portfolio';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-interface HeroProps {
-  scrollProgress: number;
-}
+gsap.registerPlugin(ScrollTrigger);
 
-export const Hero: React.FC<HeroProps> = ({ scrollProgress }) => {
-  // Fade out Hero content slightly as user scrolls past Chapter 0 (0% to 12%)
-  const opacity = Math.max(0, 1 - (scrollProgress / 0.12));
-  const translateY = -scrollProgress * 60;
-
-  const handleCtaClick = (selector: string) => {
-    const el = document.querySelector(selector);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+/* Animated character split for the name */
+function SplitName({ name }: { name: string }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setVisible(true), 200); return () => clearTimeout(t); }, []);
 
   return (
-    <section 
-      id="hero" 
-      className="relative min-h-screen flex items-end bg-transparent overflow-hidden"
-      style={{ opacity, transform: `translateY(${translateY}px)` }}
-    >
-      {/* ========== SLEEK 2D DARK FOREST BACKGROUND ========== */}
-      {/* Depth gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/15 to-black/50 z-0" />
-      
-      {/* Animated forest-green ambient glow orbs */}
-      <div className="absolute top-[20%] left-[-10%] w-[45vw] h-[45vw] rounded-full bg-primary/10 blur-[100px] animate-pulse duration-[8000ms] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
-      
-      {/* Subtle organic vector tree outlines in the background */}
-      <div className="absolute bottom-0 inset-x-0 h-48 opacity-10 flex justify-between items-end pointer-events-none z-0">
-        {[...Array(6)].map((_, i) => (
-          <svg 
-            key={i} 
-            className="w-32 md:w-48 text-[#1b3f1c]" 
-            viewBox="0 0 120 180" 
-            fill="currentColor"
-            style={{ transform: `scale(${0.7 + Math.random() * 0.6})`, marginBottom: `${-10 - Math.random() * 15}px` }}
-          >
-            <path d="M60 10 L10 100 L40 100 L15 140 L45 140 L20 170 L100 170 L75 140 L105 140 L80 100 L110 100 Z" />
-            <rect x="55" y="170" width="10" height="15" />
-          </svg>
-        ))}
-      </div>
-
-      {/* Dark overlay protecting contrast */}
-      <div className="absolute inset-0 bg-black/40 z-[1] pointer-events-none" />
-
-      {/* Content Container (pointer-events-none allows scroll to bypass text nodes) */}
-      <div className="relative z-10 pointer-events-none w-full max-w-[90%] sm:max-w-md lg:max-w-2xl px-6 md:px-16 pb-16 md:pb-24 pt-32">
-        
-        {/* Title */}
-        <h1 
-          className="text-[clamp(2.8rem,7vw,5.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-foreground mb-4 uppercase opacity-0 animate-fade-up"
-          style={{ animationDelay: '0.2s' }}
+    <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: '0' }}>
+      {name.split('').map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: 'inline-block',
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(60px)',
+            transition: `opacity 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.04 + 0.1}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.04 + 0.1}s`,
+            whiteSpace: 'pre',
+          }}
         >
-          SRI NITHISH<span className="text-primary font-black"> S</span>
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* Typewriter for the tagline */
+function Typewriter({ texts }: { texts: string[] }) {
+  const [idx, setIdx] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const target = texts[idx];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && displayed === target) {
+      timeout = setTimeout(() => setDeleting(true), 2200);
+    } else if (deleting && displayed === '') {
+      setDeleting(false);
+      setIdx(i => (i + 1) % texts.length);
+    } else {
+      const speed = deleting ? 40 : 70;
+      timeout = setTimeout(() => {
+        setDisplayed(prev =>
+          deleting ? prev.slice(0, -1) : target.slice(0, prev.length + 1)
+        );
+      }, speed);
+    }
+    return () => clearTimeout(timeout);
+  }, [displayed, deleting, idx, texts]);
+
+  return (
+    <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+      {displayed}<span className="cursor-blink" />
+    </span>
+  );
+}
+
+export default function Hero() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const nameContainerRef = useRef<HTMLHeadingElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
+
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
+
+  const scrollToWork = () => {
+    document.querySelector('#case-studies')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const typewriterTexts = [
+    'Software Engineer',
+    'Cloud Infrastructure',
+    'Full-Stack Developer',
+    'IoT Systems Builder',
+  ];
+
+  // Mouse tracking for background orb
+  useEffect(() => {
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth) - 0.5;
+      mouseY = (e.clientY / window.innerHeight) - 0.5;
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+
+    let animationFrameId: number;
+    const updateOrb = () => {
+      currentX += (mouseX - currentX) * 0.05;
+      currentY += (mouseY - currentY) * 0.05;
+
+      if (orbRef.current) {
+        orbRef.current.style.transform = `translate(${currentX * 120}px, ${currentY * 120}px)`;
+      }
+      animationFrameId = requestAnimationFrame(updateOrb);
+    };
+    updateOrb();
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  // GSAP scroll pinning and scaling
+  useEffect(() => {
+    if (!heroRef.current || !nameContainerRef.current || !contentRef.current || !scrollHintRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: '+=100%',
+          pin: true,
+          scrub: true,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      tl.to(nameContainerRef.current, {
+        scale: 1.5,
+        transformOrigin: 'left center',
+        ease: 'none',
+      }, 0)
+      .to(contentRef.current, {
+        opacity: 0,
+        y: -40,
+        ease: 'none',
+      }, 0)
+      .to(gridRef.current, {
+        yPercent: -15,
+        ease: 'none',
+      }, 0)
+      .to(scrollHintRef.current, {
+        opacity: 0,
+        y: 15,
+        ease: 'none',
+      }, 0);
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      ref={heroRef}
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '8rem 3rem 4rem',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1,
+      }}
+    >
+      {/* Faint grid background */}
+      <div ref={gridRef} style={{
+        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+        backgroundSize: '60px 60px',
+      }} />
+
+      {/* Orb background */}
+      <div ref={orbRef} className="hero-orb" style={{
+        position: 'absolute',
+        top: '20%',
+        right: '15%',
+        zIndex: 0,
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+        {/* Label */}
+        <div
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(12px)',
+            transition: 'all 0.6s ease 0.1s',
+            marginBottom: '1.5rem',
+          }}
+        >
+          <span className="section-label">Portfolio · {new Date().getFullYear()}</span>
+        </div>
+
+        {/* Big name */}
+        <h1
+          ref={nameContainerRef}
+          style={{
+            fontSize: 'clamp(3rem, 9vw, 7rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.04em',
+            lineHeight: 1,
+            marginBottom: '1.5rem',
+            overflow: 'hidden',
+            width: 'fit-content',
+            willChange: 'transform',
+          }}
+        >
+          <SplitName name={profile.name} />
         </h1>
 
-        {/* Subheading */}
-        <p 
-          className="text-foreground/85 text-[clamp(1.1rem,2.2vw,1.65rem)] font-light mb-4 md:mb-6 opacity-0 animate-fade-up"
-          style={{ animationDelay: '0.4s' }}
-        >
-          Cloud Infrastructure Engineer · Full-Stack Developer
-        </p>
+        {/* Wrapper for content to fade out during pin */}
+        <div ref={contentRef} style={{ willChange: 'opacity, transform' }}>
+          {/* Typewriter role */}
+          <div style={{
+            fontSize: 'clamp(0.85rem, 2vw, 1.1rem)',
+            color: '#6b6b6b',
+            marginBottom: '2.5rem',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 0.6s ease 0.6s',
+          }}>
+            <Typewriter texts={typewriterTexts} />
+          </div>
 
-        {/* Description */}
-        <p 
-          className="text-muted-foreground text-[clamp(0.85rem,1.4vw,1.15rem)] font-light mb-6 md:mb-8 leading-relaxed opacity-0 animate-fade-up"
-          style={{ animationDelay: '0.55s' }}
-        >
-          Specialized in secure cloud architecture, real-time edge telemetry, and international resource management. 
-          I build scalable AWS serverless pipelines and zero-trust IoT networks that bridge people, data, and technology.
-        </p>
+          {/* Divider line */}
+          <div style={{
+            height: '1px',
+            background: 'rgba(255,255,255,0.08)',
+            maxWidth: '480px',
+            marginBottom: '2.5rem',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'scaleX(1)' : 'scaleX(0)',
+            transformOrigin: 'left',
+            transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1) 0.9s',
+          }} />
 
-        {/* CTA Buttons */}
-        <div 
-          className="flex flex-wrap gap-3 font-bold opacity-0 animate-fade-up"
-          style={{ animationDelay: '0.7s' }}
-        >
-          <button 
-            onClick={() => handleCtaClick('#contact')}
-            className="bg-primary text-primary-foreground px-6 py-3 md:px-8 md:py-4 text-xs tracking-widest uppercase font-bold rounded-sm cursor-pointer hover:brightness-110 transition-all active:scale-[0.97] pointer-events-auto"
-          >
-            Connect with Me
-          </button>
-          <button 
-            onClick={() => handleCtaClick('#projects')}
-            className="bg-white text-background px-6 py-3 md:px-8 md:py-4 text-xs tracking-widest uppercase font-bold rounded-sm cursor-pointer hover:brightness-90 transition-all active:scale-[0.97] pointer-events-auto"
-          >
-            View Projects
-          </button>
+          {/* Short bio */}
+          <p style={{
+            maxWidth: '520px',
+            color: '#6b6b6b',
+            fontSize: 'clamp(0.85rem, 1.5vw, 0.95rem)',
+            lineHeight: 1.75,
+            marginBottom: '3rem',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 0.6s ease 1.1s',
+          }}>
+            Building digital experiences across the full stack — from backend APIs and cloud infrastructure to mobile apps and connected systems.
+            <br /><br />
+            Currently: <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentRole}</span> at <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentCompany}</span>.
+          </p>
+
+          {/* CTAs */}
+          <div style={{
+            display: 'flex',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'none' : 'translateY(16px)',
+            transition: 'all 0.6s ease 1.3s',
+          }}>
+            <button
+              onClick={scrollToWork}
+              data-magnetic
+              style={{
+                background: '#f0f0f0',
+                color: '#0a0a0a',
+                border: 'none',
+                padding: '0.85rem 2rem',
+                borderRadius: '4px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'none',
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+            >
+              View Work
+            </button>
+            <a
+              href={profile.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-magnetic
+              style={{
+                background: 'transparent',
+                color: '#f0f0f0',
+                border: '1px solid rgba(255,255,255,0.15)',
+                padding: '0.85rem 2rem',
+                borderRadius: '4px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'none',
+                textDecoration: 'none',
+                transition: 'border-color 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+            >
+              Resume ↗
+            </a>
+          </div>
         </div>
 
-        {/* Trust Line */}
-        <p 
-          className="text-muted-foreground/60 text-[10px] md:text-xs font-light mt-6 md:mt-8 tracking-wider uppercase opacity-0 animate-fade-up"
-          style={{ animationDelay: '0.85s' }}
+        {/* Scroll hint */}
+        <div
+          ref={scrollHintRef}
+          style={{
+            position: 'absolute',
+            bottom: '-4rem',
+            left: 0,
+            opacity: 0.3,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            willChange: 'opacity, transform',
+          }}
         >
-          ☁️ AWS Automation & Security Specialist · Totex Energy · India
-        </p>
+          <div style={{
+            width: '24px', height: '40px',
+            border: '1px solid rgba(255,255,255,0.3)',
+            borderRadius: '12px',
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '6px',
+          }}>
+            <div style={{
+              width: '3px', height: '8px',
+              background: '#fff',
+              borderRadius: '99px',
+              animation: 'char-float 1.5s ease-in-out infinite',
+            }} />
+          </div>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+            Scroll
+          </span>
+        </div>
       </div>
-
-      {/* Floating Scroll Indicator Prompt */}
-      {scrollProgress < 0.05 && (
-        <div 
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-muted-foreground/60 text-[10px] tracking-widest uppercase pointer-events-none transition-opacity duration-300"
-          style={{ opacity: Math.max(0, 1 - (scrollProgress / 0.04)) }}
-        >
-          <span className="animate-bounce">↓</span>
-          <span>Scroll to begin</span>
-        </div>
-      )}
     </section>
   );
-};
-export default Hero;
+}

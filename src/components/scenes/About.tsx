@@ -1,179 +1,215 @@
 import React, { useEffect, useRef } from 'react';
+import { profile, skillCategories } from '../../data/portfolio';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Terminal from '../Terminal';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const About: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-
-  const stones = [
-    {
-      title: "Cloud Infrastructure Specialist",
-      text: "Designing high-throughput cloud environments and serverless architectures based in India.",
-      icon: "☁️",
-      align: "left"
-    },
-    {
-      title: "IoT Systems Integrator",
-      text: "Building real-time MQTT data streaming nodes and connecting ESP32 edge processors to serverless databases.",
-      icon: "📡",
-      align: "right"
-    },
-    {
-      title: "Full-Stack Developer",
-      text: "Engineering corporate management micro-endpoints (Java/Python) and modular frontends (React/TypeScript).",
-      icon: "💻",
-      align: "left"
-    },
-    {
-      title: "Resource & Staffing Coordinator",
-      text: "Directing technical recruitment pipelines and sourcing cross-functional engineering teams internationally.",
-      icon: "👥",
-      align: "right"
-    }
-  ];
+export default function About() {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const photoRef = useRef<HTMLImageElement>(null);
+  const photoContainerRef = useRef<HTMLDivElement>(null);
+  const whoIAmRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animate the path line drawing downward
-      gsap.fromTo(lineRef.current, 
-        { scaleY: 0 },
+    // Section title clip-path slide reveal
+    if (headerRef.current) {
+      const title = headerRef.current.querySelector('.section-title');
+      const num = headerRef.current.querySelector('.num-accent');
+      
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: headerRef.current,
+          start: 'top 88%',
+        }
+      });
+      
+      tl.fromTo(title, 
+        { clipPath: 'inset(0 100% 0 0)' },
+        { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power3.out' }
+      )
+      .fromTo(num,
+        { opacity: 0, x: -15 },
+        { opacity: 1, x: 0, duration: 0.6, ease: 'power2.out' },
+        '-=0.8'
+      );
+    }
+
+    // Profile photo parallax
+    if (photoRef.current && photoContainerRef.current) {
+      gsap.fromTo(photoRef.current,
+        { yPercent: -12 },
         {
-          scaleY: 1,
+          yPercent: 12,
           ease: 'none',
           scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top center',
-            end: 'bottom center',
-            scrub: true
+            trigger: photoContainerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
           }
         }
       );
+    }
 
-      // Animate each stone tablet card sliding in
-      const cards = gsap.utils.toArray('.stone-card');
-      cards.forEach((card: any, idx: number) => {
-        const alignLeft = idx % 2 === 0;
-        gsap.fromTo(card,
-          {
-            opacity: 0,
-            x: alignLeft ? -40 : 40,
-            y: 30,
-            filter: 'blur(4px)'
-          },
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse'
-            }
+    // "Who I Am" label clip reveal
+    if (whoIAmRef.current) {
+      gsap.fromTo(whoIAmRef.current,
+        { clipPath: 'inset(0 100% 0 0)' },
+        {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: whoIAmRef.current,
+            start: 'top 90%',
           }
-        );
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
+        }
+      );
+    }
   }, []);
 
   return (
-    <section 
-      ref={containerRef}
-      id="about" 
-      className="relative min-h-screen py-24 md:py-32 bg-transparent text-foreground overflow-hidden"
-    >
-      {/* Background elements */}
-      <div className="absolute inset-0 bg-radial-gradient from-[#0d1e0d]/10 via-transparent to-transparent z-0 pointer-events-none" />
+    <section id="about" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <div style={{ padding: '8rem 3rem', maxWidth: '1200px', margin: '0 auto' }}>
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <span className="font-mono text-xs uppercase tracking-widest text-primary">Profile</span>
-          <h2 className="text-3xl md:text-5xl font-bold font-display mt-2 mb-4 text-[#f0f4f0]">
-            Professional Profile
-          </h2>
-          <div className="w-12 h-[2px] bg-primary mx-auto" />
-          <p className="text-muted-foreground text-sm max-w-md mx-auto mt-4 font-light">
-            Connecting the dots from edge processors to secure serverless systems.
-          </p>
+        {/* Header */}
+        <div ref={headerRef} style={{ display: 'flex', alignItems: 'baseline', gap: '1.5rem', marginBottom: '5rem' }}>
+          <span className="num-accent" style={{ willChange: 'opacity, transform' }}>01</span>
+          <h2 className="section-title" style={{ willChange: 'clip-path' }}>About</h2>
         </div>
 
-        {/* Vertical Timeline / Path */}
-        <div className="relative mt-16 pb-12">
-          {/* Central Vertical Trail Line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-muted/20 z-0">
-            <div 
-              ref={lineRef}
-              className="w-full h-full bg-gradient-to-b from-primary via-primary/50 to-transparent origin-top scale-y-0"
-            />
+        {/* 2-col layout */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '5rem', alignItems: 'start' }}>
+
+          {/* Left: Photo + role badge */}
+          <div data-reveal="up" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div
+              ref={photoContainerRef}
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '340px',
+                aspectRatio: '1',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <img
+                ref={photoRef}
+                src={profile.profilePhoto}
+                alt={profile.name}
+                style={{
+                  width: '100%',
+                  height: '124%', // slightly taller for parallax scroll headroom
+                  objectFit: 'cover',
+                  filter: 'grayscale(100%) contrast(1.05)',
+                  display: 'block',
+                  position: 'absolute',
+                  top: '-12%',
+                  willChange: 'transform',
+                }}
+              />
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
+                padding: '1.5rem 1rem 1rem',
+                zIndex: 2,
+              }}>
+                <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(240,240,240,0.7)' }}>
+                  {profile.location} · {profile.pronouns}
+                </p>
+              </div>
+            </div>
+
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+              padding: '0.6rem 1rem',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '4px',
+              maxWidth: 'max-content',
+            }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f0f0f0', animation: 'blink 1.5s ease infinite' }} />
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b6b6b' }}>
+                {profile.currentCompany}
+              </span>
+            </div>
           </div>
 
-          {/* Path Stone Cards */}
-          <div className="space-y-24 relative z-10">
-            {stones.map((stone, idx) => (
-              <div 
-                key={idx}
-                className={`flex flex-col md:flex-row items-center w-full ${
-                  idx % 2 === 0 ? 'md:justify-start' : 'md:justify-end'
-                }`}
-              >
-                <div 
-                  className={`stone-card w-full md:w-[45%] p-6 md:p-8 rounded-xl glass-card relative transition-all duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 border border-border/40 ${
-                    idx % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'
-                  }`}
-                >
-                  {/* Icon */}
-                  <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-xl mb-4 text-primary">
-                    {stone.icon}
-                  </div>
-                  
-                  {/* Card Title */}
-                  <h3 className="text-lg md:text-xl font-bold font-display mb-2 text-foreground">
-                    {stone.title}
-                  </h3>
-                  
-                  {/* Card Body */}
-                  <p className="text-muted-foreground text-sm font-light leading-relaxed">
-                    {stone.text}
-                  </p>
+          {/* Right: Bio text */}
+          <div data-reveal="up" data-delay="0.15">
+            <span
+              ref={whoIAmRef}
+              className="section-label"
+              style={{ display: 'block', marginBottom: '1.5rem', willChange: 'clip-path' }}
+            >
+              Who I Am
+            </span>
 
-                  {/* Decorative glowing marker on the timeline */}
-                  <div className={`hidden md:block absolute top-10 w-4 h-4 rounded-full bg-primary border-4 border-background z-20 ${
-                    idx % 2 === 0 
-                      ? '-right-[calc(11.1%_+_8px)]' 
-                      : '-left-[calc(11.1%_+_8px)]'
-                  }`} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {profile.bio.split('\n\n').map((para, i) => (
+                <p key={i} style={{ color: '#6b6b6b', lineHeight: 1.85, fontSize: '0.95rem' }}>
+                  {para}
+                </p>
+              ))}
+            </div>
+
+            <div style={{
+              display: 'grid', gridTemplateColumns: '1fr 1fr',
+              gap: '1.5rem', marginTop: '3rem',
+              paddingTop: '2rem',
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              {[
+                { label: 'Email', value: profile.email },
+                { label: 'Location', value: profile.location },
+                { label: 'GitHub', value: profile.github },
+                { label: 'LinkedIn', value: 'srinithishs' },
+              ].map(item => (
+                <div key={item.label}>
+                  <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#3a3a3a', marginBottom: '0.35rem' }}>
+                    {item.label}
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: '#9a9a9a' }}>{item.value}</span>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Scrolling marquee */}
+        <div data-reveal="fade" style={{ marginTop: '6rem', overflow: 'hidden', position: 'relative' }}>
+          <div style={{
+            position: 'absolute', top: 0, left: 0, bottom: 0, width: '80px',
+            background: 'linear-gradient(to right, #0a0a0a, transparent)',
+            zIndex: 2, pointerEvents: 'none',
+          }} />
+          <div style={{
+            position: 'absolute', top: 0, right: 0, bottom: 0, width: '80px',
+            background: 'linear-gradient(to left, #0a0a0a, transparent)',
+            zIndex: 2, pointerEvents: 'none',
+          }} />
+          <div className="marquee-track">
+            {[...skillCategories, ...skillCategories].flatMap(cat => cat.items).map((item, i) => (
+              <span key={i} style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.4rem 1.25rem',
+                marginRight: '0.75rem',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: '2px',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.65rem',
+                color: '#4a4a4a',
+                whiteSpace: 'nowrap',
+              }}>
+                {item}
+              </span>
             ))}
           </div>
-
-        </div>
-
-        {/* Interactive Terminal Shell */}
-        <div className="mt-28 max-w-3xl mx-auto relative z-20">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-bold font-display text-foreground mb-2">
-              Interactive Profile Shell
-            </h3>
-            <p className="text-muted-foreground text-xs font-light">
-              Query the developer database or run quick fact scripts using command line syntax.
-            </p>
-          </div>
-          <Terminal />
         </div>
 
       </div>
     </section>
   );
-};
-export default About;
+}

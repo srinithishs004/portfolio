@@ -23,14 +23,10 @@ export default function Education() {
               </h3>
               <p style={{ color: '#6b6b6b', fontSize: '0.9rem' }}>{education.degree}</p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', padding: '1.5rem 0', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', gap: '1rem', padding: '1.5rem 0', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', marginBottom: '2rem' }}>
               <div>
                 <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#3a3a3a', marginBottom: '0.35rem' }}>Duration</span>
                 <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{education.duration}</span>
-              </div>
-              <div>
-                <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#3a3a3a', marginBottom: '0.35rem' }}>CGPA</span>
-                <span style={{ fontSize: '1.1rem', fontWeight: 800 }}>{education.cgpa}</span>
               </div>
             </div>
             <p style={{ color: '#4a4a4a', fontSize: '0.82rem', lineHeight: 1.8 }}>{education.description}</p>

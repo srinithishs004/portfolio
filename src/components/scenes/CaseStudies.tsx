@@ -81,7 +81,7 @@ export default function CaseStudies() {
             <div className="case-content-grid">
               
               {/* Left Side: Title and metadata */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 <span
                   className="case-panel-num"
                   style={{
@@ -93,15 +93,51 @@ export default function CaseStudies() {
                 >
                   {String(idx + 1).padStart(2, '0')}
                 </span>
+                
+                <div style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '1rem', marginBottom: '0.5rem' }}>
+                  <span style={{ display: 'block', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#f0f0f0', fontWeight: 600, marginBottom: '0.25rem' }}>
+                    {study.company}
+                  </span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.6rem', color: '#6b6b6b', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    {study.roleTitle} · {study.duration}
+                  </span>
+                </div>
+
                 <div>
-                  <h3 className="case-panel-title" style={{ fontWeight: 600, letterSpacing: '-0.02em', marginBottom: '1.5rem' }}>
+                  <h3 className="case-panel-title" style={{ fontWeight: 600, letterSpacing: '-0.02em', marginBottom: '1.25rem' }}>
                     {study.title}
                   </h3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
                     {study.tags.map((tag, ti) => (
                       <span key={ti} className="skill-tag" style={{ fontSize: '0.65rem' }}>{tag}</span>
                     ))}
                   </div>
+
+                  {study.liveLink && (
+                    <a
+                      href={study.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: '0.65rem',
+                        color: '#f0f0f0',
+                        textDecoration: 'none',
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '3px',
+                        width: 'fit-content',
+                        transition: 'all 0.2s',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      Project URL ↗
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -125,9 +161,35 @@ export default function CaseStudies() {
                     ))}
                   </ul>
                 </div>
-                <div className="case-detail-cell">
-                  <span className="case-detail-label">Outcome</span>
-                  <p className="case-detail-texthighlight">{study.outcome}</p>
+                <div className="case-detail-cell" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div>
+                    <span className="case-detail-label">Outcome</span>
+                    <p className="case-detail-texthighlight" style={{ marginBottom: 0 }}>{study.outcome}</p>
+                  </div>
+                  <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', padding: '1rem', borderRadius: '4px', marginTop: 'auto' }}>
+                    <span className="case-detail-label" style={{ color: '#f0f0f0', marginBottom: '0.4rem' }}>Quantified Impact</span>
+                    <p className="case-detail-texthighlight" style={{ color: '#fff', fontWeight: 600, fontSize: '0.82rem', margin: 0 }}>
+                      {study.quantifiedOutcome}
+                    </p>
+                  </div>
+                </div>
+
+                {/* System Architecture spanning full-width */}
+                <div className="case-detail-cell" style={{ gridColumn: '1 / -1' }}>
+                  <span className="case-detail-label">System Architecture</span>
+                  <pre style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: '0.65rem',
+                    lineHeight: 1.45,
+                    background: '#070707',
+                    border: '1px solid rgba(255,255,255,0.04)',
+                    padding: '1.25rem',
+                    borderRadius: '4px',
+                    color: '#8a8a8a',
+                    overflowX: 'auto',
+                    margin: '0.5rem 0 0 0',
+                    whiteSpace: 'pre',
+                  }}>{study.architecture}</pre>
                 </div>
               </div>
 

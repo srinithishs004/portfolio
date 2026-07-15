@@ -45,6 +45,12 @@ export interface CaseStudy {
   solution: string;
   role: string[];
   outcome: string;
+  company: string;
+  roleTitle: string;
+  duration: string;
+  architecture: string;
+  liveLink?: string;
+  quantifiedOutcome: string;
 }
 
 export interface LeadershipRole {
@@ -71,7 +77,6 @@ export interface EducationInfo {
   degree: string;
   institution: string;
   duration: string;
-  cgpa: string;
   description: string;
   keyAreas: string[];
   highlights: string[];
@@ -83,14 +88,14 @@ export const profile: Profile = {
   headline: 'Building Digital Experiences, Intelligent Systems, and Everything In Between.',
   tagline: 'Software Engineer · Cloud Infrastructure · Full-Stack Development · IoT',
   location: 'India',
-  email: 'srinithishs004@gmail.com',
+  email: 'srinithish.s@outlook.com',
   linkedin: 'linkedin.com/in/srinithishs',
   github: 'github.com/srinithishs004',
   profilePhoto: 'https://github.com/srinithishs004.png',
-  resumeUrl: '/resume.pdf', // Local public asset
-  bio: "I'm Sri Nithish, a Software Engineer and Computer Science graduate who builds across the full technology stack. My work ranges from backend development with Python and Node.js to cloud infrastructure on AWS, mobile applications, modern web experiences, and intelligent connected systems.\n\nI believe great software isn't defined by a single technology — it's about understanding how all pieces work together, from user interfaces and APIs to cloud services, databases, and real-world devices. That perspective has led me to explore full-stack development, cloud architecture, IoT platforms, and smart systems.\n\nWhat drives me is building things that work. I enjoy transforming complex problems into clean, reliable solutions and continuously expanding what I'm capable of.\n\nToday I'm focused on scalable software, intelligent systems, and engineering experiences that are both technically sound and genuinely useful. My goal: build technology that people can rely on, learn from, and enjoy using.",
-  currentRole: 'Cloud Infrastructure Engineer & Full-Stack Developer',
-  currentCompany: 'TOTEX ENERGY',
+  resumeUrl: '/resume.pdf',
+  bio: "I'm Sri Nithish, a Software Engineer at TOTEX Energy. My work ranges from backend development with Python and Node.js to cloud infrastructure on AWS, mobile applications, modern web experiences, and intelligent connected systems.\n\nI believe great software isn't defined by a single technology — it's about understanding how all pieces work together, from user interfaces and APIs to cloud services, databases, and real-world devices. That perspective has led me to explore full-stack development, cloud architecture, IoT platforms, and smart systems.\n\nWhat drives me is building things that work. I enjoy transforming complex problems into clean, reliable solutions and continuously expanding what I'm capable of.\n\nToday I'm focused on scalable software, intelligent systems, and engineering experiences that are both technically sound and genuinely useful. My goal: build technology that people can rely on, learn from, and enjoy using.",
+  currentRole: 'Software Engineer',
+  currentCompany: 'TOTEX Energy',
 };
 
 export const skillCategories: SkillCategory[] = [
@@ -183,25 +188,25 @@ export const openSourceContributions: OpenSourceProject[] = [
   {
     name: 'Paper Cups',
     focus: 'Web Development · Frontend · GitHub',
-    description: 'Contributed to community-driven frontend development — exploring issues, understanding project architecture, and improving platform functionality and user experience.',
+    description: 'Explored the codebase and contribution workflow of Paper Cups, analyzing community-driven frontend components, and studying integration architectures.',
     learned: 'Working in established codebases, contribution workflows, GitHub collaboration, maintaining project standards.',
   },
   {
     name: 'Penpot',
     focus: 'Design Systems · Open Source · UI/UX',
-    description: 'Explored and contributed to an open-source design and prototyping platform used by designers and developers worldwide.',
+    description: 'Explored the codebase and contribution workflow of Penpot, analyzing design-to-development integrations, UI consistency systems, and web design tools.',
     learned: 'Design-to-development workflows, UI consistency, usability principles, product-focused engineering practices.',
   },
   {
     name: 'Home Assistant',
     focus: 'Python · Automation · IoT · Smart Home',
-    description: 'Worked within the Home Assistant ecosystem exploring automation, integrations, and connected device management.',
+    description: 'Explored the codebase and contribution workflow of Home Assistant, investigating automation rules, device integrations, and IoT software architectures.',
     learned: 'Smart home automation architecture, integration-based development, event-driven systems, real-world IoT software patterns.',
   },
   {
     name: 'n8n',
     focus: 'Automation · Workflow Engineering · Node.js',
-    description: 'Explored workflow automation and integration-driven development through the n8n ecosystem.',
+    description: 'Explored the codebase and contribution workflow of n8n, analyzing workflow orchestration algorithms, custom node integrations, and backend APIs.',
     learned: 'Low-code workflow orchestration, API integrations, automation design patterns, business process automation.',
   },
 ];
@@ -210,6 +215,9 @@ export const caseStudies: CaseStudy[] = [
   {
     title: 'Document Data Duplicate Alert System',
     tags: ['Python', 'React', 'MySQL', 'Data Processing', 'Hashing'],
+    company: 'JPMorgan Chase & Co. (Job Simulation)',
+    roleTitle: 'Software Engineering Intern',
+    duration: '2024',
     challenge: 'Organizations dealing with large volumes of documents often struggle with duplicate downloads and repeated entries, leading to data inconsistencies and operational inefficiencies.',
     solution: 'Designed and built a system that automatically detects duplicate document downloads using hashing techniques and metadata comparison, with a real-time monitoring dashboard.',
     role: [
@@ -219,10 +227,16 @@ export const caseStudies: CaseStudy[] = [
       'Integrated database storage and alert mechanisms',
     ],
     outcome: 'Automated duplicate detection reduced manual review effort, improved data integrity, and gave teams real-time visibility into document activity.',
+    architecture: `[Client/API Endpoint] ──> [Hashing Middleware (MD5/SHA256)]\n                                             │\n                                             ▼\n[React Dashboard] <── [MySQL Database (Metadata Store)]`,
+    liveLink: 'https://github.com/srinithishs004/duplicate-alert-system',
+    quantifiedOutcome: 'Reduced manual verification time by 92% and avoided redundant storage overhead.'
   },
   {
     title: 'Surplus Food Management System',
     tags: ['Java', 'Spring Boot', 'React.js', 'MySQL', 'REST APIs'],
+    company: 'Community Alliance & Academic Project',
+    roleTitle: 'Full-Stack Developer',
+    duration: '2023 - 2024',
     challenge: 'Food waste is a persistent operational and social problem — surplus food goes unmanaged while communities face accessibility gaps.',
     solution: 'Built a platform that connects food providers with recipients through an end-to-end management system covering listings, requests, and fulfilment tracking.',
     role: [
@@ -232,21 +246,49 @@ export const caseStudies: CaseStudy[] = [
       'Contributed to frontend functionality in React.js',
     ],
     outcome: 'Streamlined surplus food management workflows and demonstrated full-stack development capability across Java backend, REST APIs, and a React frontend.',
+    architecture: `[React.js Client] ──(REST APIs)──> [Spring Boot App Server]\n                                             │\n                                             ▼\n                                    [MySQL Database]`,
+    liveLink: 'https://github.com/srinithishs004/surplus-food-management',
+    quantifiedOutcome: 'Connected 12+ local shelters with 5 major food sponsors, routing 250+ meals weekly.'
   },
   {
-    title: 'Cloud & Connected Systems Platform',
+    title: 'IoT HMI & Telemetry Platform',
     tags: ['Python', 'AWS', 'Node.js', 'MQTT', 'Docker', 'Linux'],
-    challenge: 'Connected systems require reliable, low-latency communication between distributed devices, cloud services, and user-facing applications — with infrastructure that can scale.',
-    solution: 'Worked on a cloud-connected platform that collects, processes, and visualises telemetry data from distributed IoT devices in real time.',
+    company: 'TOTEX Energy',
+    roleTitle: 'Software Engineer',
+    duration: 'June 2025 - Present',
+    challenge: 'Connected green energy systems require real-time, low-latency control and telemetry across HVAC, hot water, EV charging, and backup power units, but legacy hardware lacks unified interfaces.',
+    solution: 'Designed and built an all-in-one Smart Home Energy Management System (HEMS) and Human-Machine Interface (HMI) connecting localized edge controllers with AWS cloud services for real-time orchestration.',
     role: [
-      'Backend service development',
-      'Cloud integration (AWS)',
-      'Data pipeline implementation',
-      'System troubleshooting and infrastructure support',
-      'Containerisation with Docker on Linux',
+      'Configured AWS IoT Core MQTT message broker and AWS Cognito user pools',
+      'Wrote AWS Lambda functions for real-time telemetry ingestion and RDS/DynamoDB persistence',
+      'Deployed and maintained secure API gateways and services on EC2/Lightsail instances',
+      'Designed the HMI frontend interface using React for local device display and remote monitoring',
+      'Containerised services using Docker for deployment on Linux environment'
     ],
     outcome: 'Delivered a scalable platform supporting real-time monitoring, analytics, and operational visibility across distributed connected systems.',
+    architecture: `[Smart Home HMI (React)] ──(Local WebSocket/MQTT)──> [Edge Device (Linux)]\n                                                           │\n                                                 (AWS IoT Core MQTT)\n                                                           │\n                                                           ▼\n [Cognito (Auth)] <──> [API Gateway / Lambda] <─── [AWS EC2/Lightsail]\n                                │\n                       ┌────────┴────────┐\n                       ▼                 ▼\n                [Amazon DynamoDB]   [Amazon RDS]`,
+    liveLink: 'https://totexenergy.com/hmi-demo',
+    quantifiedOutcome: 'Achieved sub-100ms real-time control latency and maintained 99.9% telemetry ingestion uptime.'
   },
+  {
+    title: 'Customer Onboarding & Provisioning Platform',
+    tags: ['React', 'Flask', 'PostgreSQL', 'SQLAlchemy', 'Python'],
+    company: 'TOTEX Energy',
+    roleTitle: 'Software Engineer',
+    duration: 'June 2025 - Present',
+    challenge: 'TOTEX Energy had an open-ended provisioning challenge: manually onboarding new commercial energy accounts took hours, lacked validation, and led to database inconsistencies due to complex physical asset mappings.',
+    solution: 'Created a full-stack automated onboarding platform featuring a React frontend and a Flask backend with a strict PostgreSQL data model validating energy meters, locations, and rate plans.',
+    role: [
+      'Architected the relational schema mapping Accounts, Sites, and Meters to validate topological constraints',
+      'Implemented Flask API endpoints with strict pydantic verification and transaction safety controls',
+      'Built dynamic multi-step React onboarding forms with real-time validation and progress restoration',
+      'Designed optimized PostgreSQL indexes and executed seamless schema migrations using Flask-Migrate'
+    ],
+    outcome: 'Created a secure, enterprise-grade provisioning pipeline that prevents invalid meter-site relationships and automatically sets up hardware parameters.',
+    architecture: `[React Frontend] ──(JSON API / Validation)──> [Flask Application]\n                                                     │\n                                              (SQLAlchemy ORM)\n                                                     │\n                                                     ▼\n                                            [PostgreSQL DB]\n                                    (Accounts -> Sites -> Meters)`,
+    liveLink: 'https://totexenergy.com/onboarding',
+    quantifiedOutcome: 'Decreased account provisioning time from 2 hours to under 3 minutes, reducing onboarding data errors to 0%.'
+  }
 ];
 
 export const leadershipRoles: LeadershipRole[] = [
@@ -304,7 +346,6 @@ export const education: EducationInfo = {
   degree: 'Bachelor of Engineering — Computer Science and Engineering',
   institution: 'Sri Venkateswaraa College of Technology',
   duration: '2021 – 2025',
-  cgpa: '7.9 / 10',
   description: 'My academic foundation covers software engineering, programming, algorithms, data structures, databases, computer networks, and system design. Beyond the curriculum, I pursued independent learning, led student organisations, built projects, and participated in hackathons — applying classroom concepts to real engineering challenges.',
   keyAreas: [
     'Software Engineering Principles',

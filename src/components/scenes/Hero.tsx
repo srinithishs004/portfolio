@@ -258,7 +258,7 @@ export default function Hero() {
           }}>
             Building digital experiences across the full stack — from backend APIs and cloud infrastructure to mobile apps and connected systems.
             <br /><br />
-            Currently: <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentRole}</span> at <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentCompany}</span>.
+            Currently: <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentRole}</span> at <span style={{ color: '#f0f0f0', fontWeight: 500 }}>{profile.currentCompany}</span> (June 2025 – Present).
           </p>
 
           {/* CTAs */}

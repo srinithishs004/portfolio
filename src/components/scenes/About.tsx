@@ -131,8 +131,8 @@ export default function About() {
               maxWidth: 'max-content',
             }}>
               <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f0f0f0', animation: 'blink 1.5s ease infinite' }} />
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#6b6b6b' }}>
-                {profile.currentCompany}
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#8a8a8a' }}>
+                {profile.currentCompany} · {profile.currentRole} (June 2025 – Present)
               </span>
             </div>
           </div>

@@ -9,7 +9,6 @@ import CaseStudies from './components/scenes/CaseStudies';
 import OpenSource from './components/scenes/OpenSource';
 import Leadership from './components/scenes/Leadership';
 import Education from './components/scenes/Education';
-import ProblemSolving from './components/scenes/ProblemSolving';
 import Certifications from './components/scenes/Certifications';
 import Contact from './components/scenes/Contact';
 import Footer from './components/scenes/Footer';
@@ -116,9 +115,6 @@ export default function App() {
         </div>
         <div className="skew-target" style={{ willChange: 'transform' }}>
           <Education />
-        </div>
-        <div className="skew-target" style={{ willChange: 'transform' }}>
-          <ProblemSolving />
         </div>
         <div className="skew-target" style={{ willChange: 'transform' }}>
           <Certifications />
